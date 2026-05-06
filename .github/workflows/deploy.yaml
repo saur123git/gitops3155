@@ -1,0 +1,61 @@
+name: "vProfile App Deployment" 
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'Dockerfile'
+      - 'kubernetes/**'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, Tag, and Push Image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: vprofile-app
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Update Kubeconfig
+        run: aws eks update-kubeconfig --name vprofile-eks --region us-east-1
+
+      - name: Deploy to EKS
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Replace placeholder with actual ECR image path
+          sed -i "s|vprofile-app-image|${ECR_REGISTRY}/vprofile-app:${IMAGE_TAG}|g" kubernetes/appdeploy.yaml
+          
+          # Apply manifests
+          kubectl apply -f kubernetes/secret.yaml
+          kubectl apply -f kubernetes/dbdeploy.yaml
+          kubectl apply -f kubernetes/db-service.yaml
+          kubectl apply -f kubernetes/mcdeploy.yaml
+          kubectl apply -f kubernetes/mc-service.yaml
+          kubectl apply -f kubernetes/rmqdeploy.yaml
+          kubectl apply -f kubernetes/rmq-service.yaml
+          kubectl apply -f kubernetes/appdeploy.yaml
+          kubectl apply -f kubernetes/appservice.yaml
