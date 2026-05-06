@@ -1,4 +1,4 @@
-name: "vProfile IAC" 
+name: "vProfile IAC"
 
 on:
   push:
@@ -11,8 +11,6 @@ jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
-    
-    # THIS BLOCK IS THE KEY: It maps GitHub Secrets to Environment Variables
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
