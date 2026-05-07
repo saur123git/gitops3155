@@ -4,4 +4,4 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Handshake successful"
+      - run: echo "Handshake successf-ul"
