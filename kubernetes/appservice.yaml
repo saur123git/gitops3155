@@ -10,3 +10,4 @@ spec:
   selector:
     app: vproapp
   type: ClusterIP
+# Deploying to vpro-eks-mesh
