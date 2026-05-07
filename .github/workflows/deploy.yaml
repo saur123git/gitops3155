@@ -49,10 +49,10 @@ jobs:
         run: |
           kubectl apply -f kubernetes/secret.yaml
           kubectl apply -f kubernetes/dbdeploy.yaml
-          kubectl apply -f kubernetes/db-service.yaml
-          kubectl apply -f kubernetes/mcdeploy.yaml
-          kubectl apply -f kubernetes/mc-service.yaml
+          kubectl apply -f kubernetes/dbservice.yaml
+          kubectl apply -f kubernetes/mcdep.yaml
+          kubectl apply -f kubernetes/mcservice.yaml
           kubectl apply -f kubernetes/rmqdeploy.yaml
-          kubectl apply -f kubernetes/rmq-service.yaml
+          kubectl apply -f kubernetes/rmqservice.yaml
           kubectl apply -f kubernetes/appdeploy.yaml
           kubectl apply -f kubernetes/appservice.yaml
