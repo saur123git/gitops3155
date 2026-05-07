@@ -31,8 +31,7 @@ spec:
                key: db-pass
       volumes:
         - name: vpro-db-data
-          persistentVolumeClaim:
-            claimName: db-pv-claim 
+          emptyDir: {}
 
       initContainers:
         - name: busybox

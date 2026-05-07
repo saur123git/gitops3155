@@ -5,7 +5,8 @@ metadata:
   labels:
     app: vprodb
 spec:
-  storageClassName: default
+  # Remove the 'default' name. 
+  # This tells EKS: "Use whatever the default storage provider is."
   accessModes:
     - ReadWriteOnce
   resources:

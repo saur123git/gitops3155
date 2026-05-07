@@ -9,6 +9,6 @@ spec:
     targetPort: 8080
   selector:
     app: vproapp
-  type: ClusterIP
+  type: LoadBalancer
 # Deploying to vpro-eks-mesh
 # Force Deploy Phase 5
