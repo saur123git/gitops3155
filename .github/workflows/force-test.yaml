@@ -1,0 +1,11 @@
+name: "Emergency Trigger Test"
+on:
+  push:
+    branches:
+      - main
+      - master
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "GitHub Actions is finally awake!"
