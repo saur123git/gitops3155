@@ -3,5 +3,5 @@ variable "region" {
 }
 
 variable "cluster_name" {
-  default = "vprofile-eks"
+  default = "vpro-eks-mesh"
 }
