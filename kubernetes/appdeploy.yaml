@@ -30,3 +30,4 @@ spec:
        args: ['-c', 'until nslookup vprocache01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']
 # Repo name fix applied
 # Triggering Phase 5
+# Deployment Sync
