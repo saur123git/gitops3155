@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vproapp
-  labels: 
+  labels:
     app: vproapp
 spec:
   replicas: 1
@@ -19,15 +19,4 @@ spec:
         image: vprofile-app-image
         imagePullPolicy: Always
         ports:
-        - name: vproapp-port
-          containerPort: 8080
-      initContainers:
-      - name: init-mydb
-        image: busybox
-        args: ['-c', 'until nslookup vprodb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']
-      - name: init-memcache
-        image: busybox
-       args: ['-c', 'until nslookup vprocache01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']
-# Repo name fix applied
-# Triggering Phase 5
-# Deployment Sync
+        - containerPort: 8080
