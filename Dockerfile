@@ -4,8 +4,15 @@ COPY . .
 RUN mvn clean install -DskipTests
 
 # Stage 2: Deploy to Tomcat
-FROM tomcat:9-jr17-temurin
+# Use 'jdk17' or 'jr17' from the correct official image name
+FROM tomcat:9.0-jdk17-temurin
+
+# Remove default tomcat apps
 RUN rm -rf /usr/local/tomcat/webapps/*
-COPY --from=build target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
+
+# Copy the artifact from the build stage
+# Ensure the name matches your pom.xml (usually vprofile-v2.war or similar)
+COPY --from=build target/*.war /usr/local/tomcat/webapps/ROOT.war
+
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
