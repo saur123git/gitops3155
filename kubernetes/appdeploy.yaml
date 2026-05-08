@@ -16,7 +16,12 @@ spec:
     spec:
       containers:
       - name: vproapp
-        image: vprofile-app-image
+        # This version uses Tomcat 10 to support Jakarta EE
+        image: vprofile-app-image 
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        env:
+        - name: JDBC_URL
+          value: "jdbc:mysql://vprodb:3306/vprofiledb"
+        
